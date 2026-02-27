@@ -3,97 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elite Coin Airdrop</title>
+    <title>Elite Coin</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #000; color: #fff; font-family: 'Arial', sans-serif; text-align: center; margin: 0; padding: 0; overflow: hidden; user-select: none; }
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; margin: 0; overflow: hidden; user-select: none; }
         .tab-menu { display: flex; background: #111; padding: 15px; justify-content: space-around; border-bottom: 2px solid #d4af37; }
-        .tab { color: #888; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .tab.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
-        .page { display: none; padding: 20px; height: 90vh; }
-        .active-page { display: block; }
-        
-        /* Moneda Dorada */
-        .coin-container { margin-top: 50px; position: relative; display: inline-block; }
-        .coin { width: 250px; filter: drop-shadow(0 0 20px #d4af37); transition: transform 0.1s; cursor: pointer; border-radius: 50%; }
-        .coin:active { transform: scale(0.92); }
-        
+        .tab { color: #888; font-weight: bold; }
+        .tab.active { color: #d4af37; }
+        .page { padding: 20px; }
         #score { font-size: 50px; font-weight: bold; color: #d4af37; margin: 20px 0; }
-        .energy-container { margin-top: 20px; font-size: 18px; color: #aaa; }
-        #e { color: #fff; font-weight: bold; }
-
-        /* Tareas */
-        .task-card { background: #1a1a1a; padding: 15px; margin: 15px 0; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .btn-go { background: #d4af37; color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .coin { width: 260px; filter: drop-shadow(0 0 15px #d4af37); transition: transform 0.1s; border-radius: 50%; cursor: pointer; }
+        .coin:active { transform: scale(0.95); }
+        .energy { margin-top: 20px; font-size: 18px; color: #aaa; }
+        .task { background: #1a1a1a; padding: 15px; margin-top: 20px; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .btn-go { background: #d4af37; color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <div class="tab-menu">
-        <div id="t1" class="tab active" onclick="show('mining')">⛏️ MINAR</div>
-        <div id="t2" class="tab" onclick="show('tasks')">📋 TAREAS</div>
-    </div>
-
-    <div id="mining" class="page active-page">
+    <div class="tab-menu"><div class="tab active">⛏️ ELITE MINING</div></div>
+    <div class="page">
         <div id="score">0</div>
-        <div class="coin-container">
-            <img src="https://img.freepik.com/premium-photo/golden-coin-with-hamster-face-it_1106454-32367.jpg" class="coin" onclick="tap(event)">
-        </div>
-        <div class="energy-container">⚡ Energía: <span id="e">1000</span> / 1000</div>
-    </div>
-
-    <div id="tasks" class="page">
-        <h2 style="color: #d4af37;">TAREAS ELITE</h2>
-        <div class="task-card">
-            <div style="text-align: left;">
-                <b style="display: block;">Seguir Instagram</b>
-                <small style="color: #d4af37;">+10,000 $ELITE</small>
-            </div>
-            <button class="btn-go" onclick="doTask('https://www.instagram.com/elite57930?igsh=YWRvenJjczdrcGJx', 10000)">IR</button>
+        <img src="https://img.freepik.com/premium-photo/golden-coin-with-hamster-face-it_1106454-32367.jpg" class="coin" onclick="tap()">
+        <div class="energy">⚡ Energía: <span id="e">1000</span> / 1000</div>
+        <div class="task">
+            <div style="text-align:left;"><b>Seguir Instagram</b><br><small style="color:gold;">+10,000 $ELITE</small></div>
+            <button class="btn-go" onclick="doTask()">IR</button>
         </div>
     </div>
-
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        let coins = 0;
-        let energy = 1000;
-        const maxEnergy = 1000;
-
-        function show(p) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(p).classList.add('active-page');
-            if(p=='mining') document.getElementById('t1').classList.add('active');
-            else document.getElementById('t2').classList.add('active');
-        }
-
-        function tap(event) {
-            if (energy > 0) {
-                coins += 1;
-                energy -= 1;
+        let coins = 0; let energy = 1000;
+        function tap() {
+            if(energy > 0) {
+                coins++; energy--;
                 document.getElementById('score').innerText = coins;
                 document.getElementById('e').innerText = energy;
-                
-                if (coins % 10 === 0) {
-                    tg.sendData(JSON.stringify({clicks: 10}));
-                }
+                if(coins % 10 === 0) tg.sendData(JSON.stringify({clicks: 10}));
             }
         }
-
-        function doTask(url, reward) {
-            window.open(url, '_blank');
-            tg.sendData(JSON.stringify({tarea: "instagram", recompensa: reward}));
+        function doTask() {
+            window.open('https://www.instagram.com/elite57930?igsh=YWRvenJjczdrcGJx', '_blank');
+            tg.sendData(JSON.stringify({tarea: "insta", recompensa: 10000}));
         }
-
-        // --- SISTEMA DE RECARGA AUTOMÁTICA ---
         setInterval(() => {
-            if (energy < maxEnergy) {
-                energy += 1; // Recarga 1 punto por segundo
-                document.getElementById('e').innerText = energy;
-            }
-        }, 1000); 
-
+            if(energy < 1000) { energy++; document.getElementById('e').innerText = energy; }
+        }, 1000);
     </script>
 </body>
             </html>
