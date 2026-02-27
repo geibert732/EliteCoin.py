@@ -12,16 +12,11 @@
         .tab.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
         .page { display: none; padding: 20px; height: 90vh; }
         .active-page { display: block; }
-        
-        /* Moneda Dorada Fina */
         .coin-container { margin-top: 50px; position: relative; display: inline-block; }
         .coin { width: 250px; filter: drop-shadow(0 0 20px #d4af37); transition: transform 0.1s; cursor: pointer; border-radius: 50%; }
         .coin:active { transform: scale(0.92); }
-        
         #score { font-size: 50px; font-weight: bold; color: #d4af37; margin: 20px 0; }
         .energy { color: #aaa; font-size: 18px; margin-top: 10px; }
-        
-        /* Tarjetas de Tareas */
         .task-card { background: #1a1a1a; padding: 15px; margin: 15px 0; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
         .btn-go { background: #d4af37; color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
@@ -42,7 +37,7 @@
     </div>
 
     <div id="tasks" class="page">
-        <h2 style="color: #d4af37;">GANA $ELITE EXTRA</h2>
+        <h2 style="color: #d4af37;">TAREAS ELITE</h2>
         <div class="task-card">
             <div style="text-align: left;">
                 <b style="display: block;">Seguir Instagram Oficial</b>
@@ -72,8 +67,6 @@
                 energy -= 1;
                 document.getElementById('score').innerText = coins;
                 document.getElementById('e').innerText = energy;
-                
-                // Envía datos al bot cada 10 clics
                 if (coins % 10 === 0) {
                     tg.sendData(JSON.stringify({clicks: 10}));
                 }
@@ -82,10 +75,9 @@
 
         function doTask(url, reward) {
             window.open(url, '_blank');
-            // Envía la recompensa de la tarea al bot
             tg.sendData(JSON.stringify({tarea: "instagram", recompensa: reward}));
         }
     </script>
 </body>
-  </html>
-      
+                </html>
+            
