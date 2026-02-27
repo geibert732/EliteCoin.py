@@ -8,15 +8,21 @@
     <style>
         body { background: #000; color: #fff; font-family: 'Arial', sans-serif; text-align: center; margin: 0; padding: 0; overflow: hidden; user-select: none; }
         .tab-menu { display: flex; background: #111; padding: 15px; justify-content: space-around; border-bottom: 2px solid #d4af37; }
-        .tab { color: #888; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        .tab { color: #888; cursor: pointer; font-weight: bold; font-size: 14px; }
         .tab.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
         .page { display: none; padding: 20px; height: 90vh; }
         .active-page { display: block; }
+        
+        /* Moneda Dorada */
         .coin-container { margin-top: 50px; position: relative; display: inline-block; }
         .coin { width: 250px; filter: drop-shadow(0 0 20px #d4af37); transition: transform 0.1s; cursor: pointer; border-radius: 50%; }
         .coin:active { transform: scale(0.92); }
+        
         #score { font-size: 50px; font-weight: bold; color: #d4af37; margin: 20px 0; }
-        .energy { color: #aaa; font-size: 18px; margin-top: 10px; }
+        .energy-container { margin-top: 20px; font-size: 18px; color: #aaa; }
+        #e { color: #fff; font-weight: bold; }
+
+        /* Tareas */
         .task-card { background: #1a1a1a; padding: 15px; margin: 15px 0; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
         .btn-go { background: #d4af37; color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
@@ -33,14 +39,14 @@
         <div class="coin-container">
             <img src="https://img.freepik.com/premium-photo/golden-coin-with-hamster-face-it_1106454-32367.jpg" class="coin" onclick="tap(event)">
         </div>
-        <div class="energy">⚡ Energía: <span id="e">1000</span> / 1000</div>
+        <div class="energy-container">⚡ Energía: <span id="e">1000</span> / 1000</div>
     </div>
 
     <div id="tasks" class="page">
         <h2 style="color: #d4af37;">TAREAS ELITE</h2>
         <div class="task-card">
             <div style="text-align: left;">
-                <b style="display: block;">Seguir Instagram Oficial</b>
+                <b style="display: block;">Seguir Instagram</b>
                 <small style="color: #d4af37;">+10,000 $ELITE</small>
             </div>
             <button class="btn-go" onclick="doTask('https://www.instagram.com/elite57930?igsh=YWRvenJjczdrcGJx', 10000)">IR</button>
@@ -52,6 +58,7 @@
         tg.expand();
         let coins = 0;
         let energy = 1000;
+        const maxEnergy = 1000;
 
         function show(p) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
@@ -67,6 +74,7 @@
                 energy -= 1;
                 document.getElementById('score').innerText = coins;
                 document.getElementById('e').innerText = energy;
+                
                 if (coins % 10 === 0) {
                     tg.sendData(JSON.stringify({clicks: 10}));
                 }
@@ -77,7 +85,16 @@
             window.open(url, '_blank');
             tg.sendData(JSON.stringify({tarea: "instagram", recompensa: reward}));
         }
+
+        // --- SISTEMA DE RECARGA AUTOMÁTICA ---
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy += 1; // Recarga 1 punto por segundo
+                document.getElementById('e').innerText = energy;
+            }
+        }, 1000); 
+
     </script>
 </body>
-    </html>
-                
+                                                                                    </html>
+            
