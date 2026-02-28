@@ -15,6 +15,7 @@
         .coin { width: 250px; filter: drop-shadow(0 0 15px #d4af37); transition: transform 0.1s; border-radius: 50%; cursor: pointer; }
         .coin:active { transform: scale(0.95); }
         .energy { margin-top: 20px; font-size: 18px; color: #aaa; }
+        #e { color: #fff; font-weight: bold; }
         .task { background: #1a1a1a; padding: 15px; margin-top: 20px; border-radius: 15px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
         .btn-go { background: #d4af37; color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
     </style>
@@ -30,26 +31,49 @@
             <button class="btn-go" onclick="doTask()">IR</button>
         </div>
     </div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        let coins = 0; let energy = 1000;
+        let coins = 0; 
+        let energy = 1000;
+        let totalToSend = 0;
+
         function tap() {
             if(energy > 0) {
-                coins++; energy--;
+                coins++;
+                energy--;
+                totalToSend++;
                 document.getElementById('score').innerText = coins;
                 document.getElementById('e').innerText = energy;
-                if(coins % 10 === 0) tg.sendData(JSON.stringify({clicks: 10}));
+                
+                // Envía datos cada 10 clics automáticamente
+                if(totalToSend >= 10) {
+                    tg.sendData(JSON.stringify({clicks: totalToSend}));
+                    totalToSend = 0;
+                }
             }
         }
+
         function doTask() {
             window.open('https://www.instagram.com/elite57930?igsh=YWRvenJjczdrcGJx', '_blank');
             tg.sendData(JSON.stringify({tarea: "insta", recompensa: 10000}));
         }
+
+        // Recarga de energía
         setInterval(() => {
-            if(energy < 1000) { energy++; document.getElementById('e').innerText = energy; }
+            if(energy < 1000) { 
+                energy++; 
+                document.getElementById('e').innerText = energy; 
+            }
         }, 1000);
+
+        // Asegura enviar los clics restantes al cerrar
+        window.addEventListener('beforeunload', () => {
+            if(totalToSend > 0) {
+                tg.sendData(JSON.stringify({clicks: totalToSend}));
+            }
+        });
     </script>
 </body>
-        </html>
-                                           
+</html>
